@@ -34,7 +34,7 @@ defmodule ExAge.MixProject do
 
   defp package do
     [
-      licenses: ["MIT OR Apache-2.0"],
+      licenses: ["MIT", "Apache-2.0"],
       links: %{"GitHub" => @source_url, "age" => "https://age-encryption.org"},
       files: [
         "lib",
