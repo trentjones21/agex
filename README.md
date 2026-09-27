@@ -136,11 +136,19 @@ native/ex_age/src/lib.rs   Rust NIF wrapping the age crate
 1. Bump `@version` in `mix.exs`. The repository must be public so Hex users
    can download the release assets from `@source_url`.
 2. Push a `vX.Y.Z` tag. The `release.yml` workflow builds a NIF for each target
-   and attaches it to a GitHub release.
-3. Generate the checksum file that ships with the Hex package:
+   and attaches it to a GitHub release. Wait for all of the jobs to finish.
+3. Generate the checksum file that ships with the Hex package, and commit it:
 
    ```sh
    mix rustler_precompiled.download ExAge.Native --all --print
+   git add checksum-Elixir.ExAge.Native.exs && git commit -m "Add checksums for vX.Y.Z"
    ```
 
 4. Run `mix hex.publish`.
+
+## License
+
+Licensed under either of
+[Apache License, Version 2.0](https://github.com/trentjones21/agex/blob/main/LICENSE-APACHE)
+or [MIT license](https://github.com/trentjones21/agex/blob/main/LICENSE-MIT) at your option,
+the same terms as `age` and `rage`.

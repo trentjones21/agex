@@ -26,7 +26,7 @@ ex_age-*.tar
 /tmp/
 
 # Rust binary artifacts
-/target/
+target/
 
 # Compiled NIF copied in by Rustler
 /priv/native/
