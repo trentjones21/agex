@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Elixir ${{ matrix.elixir }} / OTP ${{ matrix.otp }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { elixir: "1.15", otp: "25" }
+          - { elixir: "1.18", otp: "27" }
+    env:
+      EX_AGE_BUILD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - name: Install the reference age CLI for interop tests
+        run: sudo apt-get update && sudo apt-get install -y age
+      - run: mix deps.get
+      - run: mix format --check-formatted
+      - run: cargo fmt --all --check
+      - run: cargo clippy --manifest-path native/ex_age/Cargo.toml -- -D warnings
+      - run: mix compile --warnings-as-errors
+      - run: mix test
